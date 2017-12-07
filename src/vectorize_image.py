@@ -1,4 +1,3 @@
-import sys
 from glob import glob
 
 import numpy as np
@@ -8,35 +7,12 @@ from keras.applications.vgg16 import preprocess_input
 from keras.preprocessing import image
 
 from settings import config
-
-
-def save_sparse_matrix(filename, x):
-    x_coo = x.tocoo()
-    row = x_coo.row
-    col = x_coo.col
-    data = x_coo.data
-    shape = x_coo.shape
-    np.savez(filename, row=row, col=col, data=data, shape=shape)
-
-
-def load_sparse_matrix(filename):
-    y = np.load(filename)
-    z = sp.coo_matrix((y['data'], (y['row'], y['col'])), shape=y['shape'])
-    return z
+from sparce import save_sparse_matrix
 
 
 def save(arr, filename):
     with open(filename, 'w') as fd:
         fd.write(','.join(arr))
-
-
-def vectorize(path, model):
-    img = image.load_img(path, target_size=(224, 224))
-    x = image.img_to_array(img)
-    x = np.expand_dims(x, axis=0)
-    x = preprocess_input(x)
-    pred = model.predict(x)
-    return pred.ravel()
 
 
 def vectorize_all(files, model, batch_size=512):
@@ -79,9 +55,3 @@ def main(owner_id):
     save(files, config.images_order(owner_id))
     vecs = vectorize_all(files, model)
     save_sparse_matrix(config.vectors_path(owner_id), vecs)
-
-
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Should be `python3 src/vectorize_image.py GROUP_ID`")
-    main(sys.argv[1])

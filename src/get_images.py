@@ -1,5 +1,3 @@
-import sys
-
 from vk_api import VkApi
 from vk_api import VkTools
 
@@ -65,9 +63,3 @@ def extract_photos(photo):
         return None
 
     return {'big': big, 'small': small}
-
-
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Should be `python3 src/download_images.py GROUP_ID`")
-    main(sys.argv[1])

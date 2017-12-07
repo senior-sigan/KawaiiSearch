@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 from multiprocessing.dummy import Pool
 
 import requests
@@ -9,24 +8,6 @@ import requests
 from settings import config
 
 KEYS = ['id', 'owner_id', 'album_id', 'date', 'big', 'small']
-
-
-def main(owner_id):
-    root = config.images_path(owner_id)
-    os.makedirs(root, exist_ok=True)
-    count = 0
-
-    def _download(url):
-        nonlocal count
-        count += 1
-        if count % 50 == 0:
-            print("{}".format(count))
-        try:
-            download(root, url)
-        except Exception as e:
-            print(e)
-
-    Pool(config.pool_size).map(_download, data(config.info_path(owner_id)))
 
 
 def download(root, d):
@@ -52,7 +33,19 @@ def data(path):
             yield d
 
 
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Should be `python3 src/download_images.py GROUP_ID`")
-    main(sys.argv[1])
+def main(owner_id):
+    root = config.images_path(owner_id)
+    os.makedirs(root, exist_ok=True)
+    count = 0
+
+    def _download(url):
+        nonlocal count
+        count += 1
+        if count % 50 == 0:
+            print("{}".format(count))
+        try:
+            download(root, url)
+        except Exception as e:
+            print(e)
+
+    Pool(config.pool_size).map(_download, data(config.info_path(owner_id)))
