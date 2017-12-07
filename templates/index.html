@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kawaii Search</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Kawaii search</h1>
+    <p><a href="https://github.com/blan4/ImagesSimilarityDemo">GitHub</a></p>
+
+    <section>
+        <form method="POST" enctype="multipart/form-data">
+            <button type="submit" class="btn btn-primary">I'm lucky</button>
+        </form>
+    </section>
+
+    <section>
+        {% for file in files %}
+        <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
+            <a href="{{file[0][1]}}" target="_blank"><img src="{{ file[0][0] }}" height="300px"></a>
+            <figcaption>{{ "{0:.4f}".format(file[1]) }}</figcaption>
+        </figure>
+        {% endfor %}
+    </section>
+</div>
+</body>
+</html>

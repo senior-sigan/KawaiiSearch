@@ -22,8 +22,8 @@ def _vectorize(path, model):
     return pred.ravel()
 
 
-def _similar(vec, knn, filenames):
-    dist, indices = knn.kneighbors(vec.reshape(1, -1), n_neighbors=6)
+def _similar(vec, knn, filenames, n_neighbors=6):
+    dist, indices = knn.kneighbors(vec.reshape(1, -1), n_neighbors=n_neighbors)
     dist, indices = dist.flatten(), indices.flatten()
     return [(filenames[indices[i]], dist[i]) for i in range(len(indices))]
 
@@ -37,14 +37,14 @@ def load_predictor(owner_id):
     knn = NearestNeighbors(metric='cosine', algorithm='brute')
     knn.fit(vecs)
 
-    def similarity(file_path):
+    def similarity(file_path, n_neighbors=6):
         vec = _vectorize(file_path, model)
-        return _similar(vec, knn, filenames)
+        return _similar(vec, knn, filenames, n_neighbors)
 
     return similarity
 
 
-def random_file(owner_id):
+def random(owner_id):
     filenames = open(config.images_order(owner_id), 'r').readline().split(',')
 
     def rf():

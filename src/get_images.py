@@ -18,11 +18,11 @@ def get_limit(session, owner_id):
     return 50000
 
 
-def save(path, iter, limit):
+def save(path, iter_, limit):
     done = 0.0
     with open(path, "a") as fd:
         fd.write(','.join(KEYS) + "\n")
-        for i in iter:
+        for i in iter_:
             done += 1
             fd.write(','.join(line(i)) + "\n")
             if done % 100 == 0:

@@ -1,3 +1,4 @@
+pandas
 flask
 keras
 numpy
@@ -5,3 +6,4 @@ matplotlib
 pillow
 scipy
 sklearn
+h5py
