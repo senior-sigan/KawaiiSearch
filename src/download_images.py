@@ -5,13 +5,14 @@ import sys
 from multiprocessing.dummy import Pool
 
 import requests
+
 import config
 
 KEYS = ['id', 'owner_id', 'album_id', 'date', 'big', 'small']
 
 
-def main(cfg, owner_id):
-    root = cfg.images_path(owner_id)
+def main(owner_id):
+    root = config.images_path(owner_id)
     os.makedirs(root, exist_ok=True)
     count = 0
 
@@ -25,7 +26,7 @@ def main(cfg, owner_id):
         except Exception as e:
             print(e)
 
-    Pool(cfg.pool_size).map(_download, data(cfg.info_path(owner_id)))
+    Pool(config.pool_size).map(_download, data(config.info_path(owner_id)))
 
 
 def download(root, d):
@@ -54,4 +55,4 @@ def data(path):
 if __name__ == '__main__':
     if (len(sys.argv) != 2):
         print("Should be `python3 src/download_images.py GROUP_ID`")
-    main(config, sys.argv[1])
+    main(sys.argv[1])

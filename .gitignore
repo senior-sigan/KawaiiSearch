@@ -3,7 +3,7 @@
 __pycache__
 *.pyc
 
-src/config.py
+src/secrets.py
 
 data/
 !data/.keep

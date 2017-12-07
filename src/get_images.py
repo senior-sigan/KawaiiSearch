@@ -1,21 +1,25 @@
+import sys
+
 from vk_api import VkApi
 from vk_api import VkTools
 
-import sys
 import config
+import secrets
 
 KEYS = ['id', 'owner_id', 'album_id', 'date', 'big', 'small']
 
 
-def main(cfg, owner_id):
-    session = VkApi(token=cfg.token, app_id=cfg.app_id, client_secret=cfg.client_secret, api_version='5.69')
+def main(owner_id):
+    session = VkApi(token=secrets.token, app_id=secrets.app_id, client_secret=secrets.client_secret, api_version='5.69')
     limit = get_limit(session, owner_id)
     iter_ = photos_iter(session, owner_id, limit)
-    save(cfg.info_path(owner_id), iter_, limit)
+    save(config.info_path(owner_id), iter_, limit)
+
 
 def get_limit(session, owner_id):
     # TODO: load photos count in the album
     return 50000
+
 
 def save(path, iter, limit):
     done = 0.0
@@ -55,7 +59,7 @@ def extract_photos(photo):
     d = {}
     for s in photo['sizes']:
         d[s['type']] = s
-    small = d.get('r', d.get('q', d.get('p',{}))).get('src', None)
+    small = d.get('r', d.get('q', d.get('p', {}))).get('src', None)
     big = d.get('w', d.get('z', d.get('y', d.get('x', {})))).get('src', None)
 
     if (small is None) or (big is None):
@@ -65,6 +69,6 @@ def extract_photos(photo):
 
 
 if __name__ == '__main__':
-    if (len(sys.argv) != 2):
+    if len(sys.argv) != 2:
         print("Should be `python3 src/download_images.py GROUP_ID`")
-    main(config, sys.argv[1])
+    main(sys.argv[1])

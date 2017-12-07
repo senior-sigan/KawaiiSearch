@@ -1,11 +1,14 @@
+import sys
+from glob import glob
+
+import numpy as np
+import scipy.sparse as sp
 from keras.applications import VGG16
 from keras.applications.vgg16 import preprocess_input
 from keras.preprocessing import image
-import numpy as np
-import sys
-from glob import glob
-import scipy.sparse as sp
-from scipy import io
+
+import config
+
 
 def save_sparse_matrix(filename, x):
     x_coo = x.tocoo()
@@ -15,22 +18,26 @@ def save_sparse_matrix(filename, x):
     shape = x_coo.shape
     np.savez(filename, row=row, col=col, data=data, shape=shape)
 
+
 def load_sparse_matrix(filename):
     y = np.load(filename)
     z = sp.coo_matrix((y['data'], (y['row'], y['col'])), shape=y['shape'])
     return z
 
+
 def save(arr, filename):
     with open(filename, 'w') as fd:
         fd.write(','.join(arr))
 
+
 def vectorize(path, model):
-    img = kimage.load_img(path, target_size=(224, 224))
-    x = kimage.img_to_array(img)
+    img = image.load_img(path, target_size=(224, 224))
+    x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
     pred = model.predict(x)
     return pred.ravel()
+
 
 def vectorize_all(files, model, batch_size=512):
     print("Will vectorize")
@@ -47,6 +54,7 @@ def vectorize_all(files, model, batch_size=512):
         X = np.zeros(((max_idx - min_idx), px, px, 3))
         # For each file in batch, 
         # load as row into X
+        i = 0
         for i in range(min_idx, max_idx):
             file = files[i]
             try:
@@ -65,12 +73,15 @@ def vectorize_all(files, model, batch_size=512):
     return preds
 
 
-def main():
+def main(owner_id):
     model = VGG16(include_top=False, weights='imagenet', pooling='max')
-    files = glob(cfg.images_glob_path(owner_id))
-    save(files, cfg.images_order(owner_id))
+    files = glob(config.images_glob_path(owner_id))
+    save(files, config.images_order(owner_id))
     vecs = vectorize_all(files, model)
-    save_sparse_matrix(cfg.vectors_path(owner_id), vecs)
+    save_sparse_matrix(config.vectors_path(owner_id), vecs)
+
 
 if __name__ == '__main__':
-    main()
+    if (len(sys.argv) != 2):
+        print("Should be `python3 src/vectorize_image.py GROUP_ID`")
+    main(sys.argv[1])

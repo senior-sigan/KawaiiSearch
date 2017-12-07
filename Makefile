@@ -3,7 +3,7 @@ copy:
 	gcloud compute scp src "keras--tf-gpu":~/images_similarity/src --recurse --zone europe-west1-d --compress
 
 copy_data:
-	gcloud compute scp data/images.tar.gz "keras--tf-gpu":~/images_similarity/data/images.tar.gz --zone europe-west1-d
+	gcloud compute scp data/images "keras--tf-gpu":~/images_similarity/data/images --recurse --zone europe-west1-d
 
 ssh:
 	gcloud compute ssh --project "mltest-180907" --zone "europe-west1-d" "keras--tf-gpu"
