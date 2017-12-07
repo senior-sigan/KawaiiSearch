@@ -1,0 +1,7 @@
+flask
+keras
+numpy
+matplotlib
+pillow
+scipy
+sklearn

@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
+from urllib import request
+from uuid import uuid4
 
 import numpy as np
-from keras.applications.vgg16 import preprocess_input, VGG16
+from keras.applications import VGG19
+from keras.applications.vgg19 import preprocess_input
+from keras.engine import Model
 from keras.preprocessing import image
 from sklearn.neighbors import NearestNeighbors
 
@@ -21,13 +25,15 @@ def _vectorize(path, model):
 def _similar(vec, knn, filenames):
     dist, indices = knn.kneighbors(vec.reshape(1, -1), n_neighbors=6)
     dist, indices = dist.flatten(), indices.flatten()
-    return [filenames[indices[i]] for i in range(len(indices))]
+    return [(filenames[indices[i]], dist[i]) for i in range(len(indices))]
 
 
 def load_predictor(owner_id):
     filenames = open(config.images_order(owner_id), 'r').readline().split(',')
     vecs = load_sparse_matrix(config.vectors_path(owner_id))
-    model = VGG16(include_top=False, weights='imagenet', pooling='max')
+    base_model = VGG19(weights='imagenet')
+    # Read about fc1 here http://cs231n.github.io/convolutional-networks/
+    model = Model(inputs=base_model.input, outputs=base_model.get_layer('fc1').output)
     knn = NearestNeighbors(metric='cosine', algorithm='brute')
     knn.fit(vecs)
 
@@ -36,3 +42,18 @@ def load_predictor(owner_id):
         return _similar(vec, knn, filenames)
 
     return similarity
+
+
+def random_file(owner_id):
+    filenames = open(config.images_order(owner_id), 'r').readline().split(',')
+
+    def rf():
+        return np.random.choice(filenames)
+
+    return rf
+
+
+def download(url):
+    f = "/tmp/images/{}".format(str(uuid4()))
+    request.urlretrieve(url, f)
+    return f

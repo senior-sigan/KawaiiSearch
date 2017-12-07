@@ -10,11 +10,12 @@ def draw(fnames, origin=None):
         plt.axis('off')
     plt.figure(figsize=(30, 15))
     for i in range(len(fnames)):
-        f = fnames[i]
+        f, d = fnames[i]
         try:
             img = Image.open(f)
             plt.subplot(1, 10, i + 1)
             plt.axis('off')
+            plt.title("{0:.4f}".format(d))
             plt.imshow(img)
         except Exception as e:
             print(e)

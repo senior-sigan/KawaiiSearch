@@ -27,11 +27,11 @@ def main():
     args = parser.parse_args()
 
     if args.get_images:
-        get_images_(args.owner_id)
+        get_images_(args)
     if args.download_images:
-        download_images_(args.owner_id)
+        download_images_(args)
     if args.vectorize_images:
-        vectorize_image_(args.owner_id)
+        vectorize_image_(args)
 
 
 if __name__ == '__main__':
