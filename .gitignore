@@ -1,0 +1,12 @@
+.idea
+.ipynb_checkpoints
+__pycache__
+*.pyc
+
+src/config.py
+
+data/images
+data/photos.csv
+
+submission/images_order.csv
+submission/images_vec.npz
