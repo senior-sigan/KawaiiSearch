@@ -32,10 +32,8 @@ def vectorize(path, model):
     pred = model.predict(x)
     return pred.ravel()
 
-def vectorize_all(root, model, batch_size=512):
+def vectorize_all(files, model, batch_size=512):
     print("Will vectorize")
-    files = glob(root)
-    save(files, '../submission/images_order.csv')
     min_idx = 0
     max_idx = min_idx + batch_size
     total_max = len(files)
@@ -69,8 +67,10 @@ def vectorize_all(root, model, batch_size=512):
 
 def main():
     model = VGG16(include_top=False, weights='imagenet', pooling='max')
-    vecs = vectorize_all('../data/images/*.jpg', model, 512)
-    save_sparse_matrix("../submission/images_vec.npz", vecs)
+    files = glob(cfg.images_glob_path(owner_id))
+    save(files, cfg.images_order(owner_id))
+    vecs = vectorize_all(files, model)
+    save_sparse_matrix(cfg.vectors_path(owner_id), vecs)
 
 if __name__ == '__main__':
     main()
