@@ -6,7 +6,7 @@ This is a demo of applying VGG16 and kNN to build similar image search.
 
 __[download my dataset](https://yadi.sk/d/lNREFvKa3QPSRs)__
 
-You can use any big dataset with images. I used cosplay pictures from [VK](https://vk.com).
+You can use any big dataset with images. I used cosplay pictures from this group: [vk/wtfcute](https://vk.com/wtfcute).
 
 ```
 ./data
@@ -30,8 +30,8 @@ Look into `test.ipynb` file for example of using this model.
 
 ## TODO
 
-- [] create a single main file to do all the steps
-- [] write a blog post about this
-- [] create an app to find similar photos from the dataset by an image URL
-- [] create web service for telegram chat
-- [] download more images 
+- [ ] create a single main file to do all the steps
+- [ ] write a blog post about this
+- [ ] create an app to find similar photos from the dataset by an image URL
+- [ ] create web service for telegram chat
+- [ ] download more images 
