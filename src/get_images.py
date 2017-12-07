@@ -3,8 +3,7 @@ import sys
 from vk_api import VkApi
 from vk_api import VkTools
 
-import config
-import secrets
+from settings import secrets, config
 
 KEYS = ['id', 'owner_id', 'album_id', 'date', 'big', 'small']
 

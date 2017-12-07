@@ -6,7 +6,7 @@ from multiprocessing.dummy import Pool
 
 import requests
 
-import config
+from settings import config
 
 KEYS = ['id', 'owner_id', 'album_id', 'date', 'big', 'small']
 
@@ -53,6 +53,6 @@ def data(path):
 
 
 if __name__ == '__main__':
-    if (len(sys.argv) != 2):
+    if len(sys.argv) != 2:
         print("Should be `python3 src/download_images.py GROUP_ID`")
     main(sys.argv[1])

@@ -7,7 +7,7 @@ from keras.applications import VGG16
 from keras.applications.vgg16 import preprocess_input
 from keras.preprocessing import image
 
-import config
+from settings import config
 
 
 def save_sparse_matrix(filename, x):
@@ -82,6 +82,6 @@ def main(owner_id):
 
 
 if __name__ == '__main__':
-    if (len(sys.argv) != 2):
+    if len(sys.argv) != 2:
         print("Should be `python3 src/vectorize_image.py GROUP_ID`")
     main(sys.argv[1])
