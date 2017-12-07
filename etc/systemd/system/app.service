@@ -1,0 +1,10 @@
+[Unit]
+Description=flask app
+
+[Service]
+WorkingDirectory=/home/ilya/images_similarity
+ExecStart=/usr/bin/python3 -u src/server.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

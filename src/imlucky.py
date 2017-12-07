@@ -11,6 +11,7 @@ rf = random(owner_id)
 repo = pictures_repo(owner_id)
 print("Imlucky loaded")
 
+
 def imlucky():
     f = rf()
     files = pred(f, 12)
