@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 from multiprocessing.dummy import Pool
 
 import requests
+import config
 
 KEYS = ['id', 'owner_id', 'album_id', 'date', 'big', 'small']
 
 
-def main(root):
+def main(cfg, owner_id):
+    root = cfg.images_path(owner_id)
     os.makedirs(root, exist_ok=True)
     count = 0
 
@@ -22,7 +25,7 @@ def main(root):
         except Exception as e:
             print(e)
 
-    Pool(50).map(_download, data())
+    Pool(cfg.pool_size).map(_download, data(cfg.info_path(owner_id)))
 
 
 def download(root, d):
@@ -34,8 +37,8 @@ def download(root, d):
         file.write(res.content)
 
 
-def data():
-    with open("photos.csv", "r") as fd:
+def data(path):
+    with open(path, "r") as fd:
         fd.readline()
         while True:
             line = fd.readline()
@@ -49,4 +52,6 @@ def data():
 
 
 if __name__ == '__main__':
-    main("images")
+    if (len(sys.argv) != 2):
+        print("Should be `python3 src/download_images.py GROUP_ID`")
+    main(config, sys.argv[1])

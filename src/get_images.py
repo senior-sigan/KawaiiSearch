@@ -1,20 +1,25 @@
 from vk_api import VkApi
 from vk_api import VkTools
 
+import sys
 import config
 
 KEYS = ['id', 'owner_id', 'album_id', 'date', 'big', 'small']
 
 
-def main(cfg, owner_id, limit):
+def main(cfg, owner_id):
     session = VkApi(token=cfg.token, app_id=cfg.app_id, client_secret=cfg.client_secret, api_version='5.69')
-    iter = photos_iter(session, owner_id, limit)
-    save(iter, limit)
+    limit = get_limit(session, owner_id)
+    iter_ = photos_iter(session, owner_id, limit)
+    save(cfg.info_path(owner_id), iter_, limit)
 
+def get_limit(session, owner_id):
+    # TODO: load photos count in the album
+    return 50000
 
-def save(iter, limit):
+def save(path, iter, limit):
     done = 0.0
-    with open("photos.csv", "a") as fd:
+    with open(path, "a") as fd:
         fd.write(','.join(KEYS) + "\n")
         for i in iter:
             done += 1
@@ -30,6 +35,8 @@ def photos_iter(session, owner_id, limit):
                                      limit=limit)
     for photo in photos:
         src = extract_photos(photo)
+        if src is None:
+            continue
         yield {'big': src['big'],
                'small': src['small'],
                'date': photo['date'],
@@ -48,11 +55,16 @@ def extract_photos(photo):
     d = {}
     for s in photo['sizes']:
         d[s['type']] = s
-    small = d.get('p', {}).get('src', None)
-    big = d.get('w', d.get('z', d.get('y', {}))).get('src', None)
+    small = d.get('r', d.get('q', d.get('p',{}))).get('src', None)
+    big = d.get('w', d.get('z', d.get('y', d.get('x', {})))).get('src', None)
+
+    if (small is None) or (big is None):
+        return None
 
     return {'big': big, 'small': small}
 
 
 if __name__ == '__main__':
-    main(config, config.group_id, 50000)
+    if (len(sys.argv) != 2):
+        print("Should be `python3 src/download_images.py GROUP_ID`")
+    main(config, sys.argv[1])

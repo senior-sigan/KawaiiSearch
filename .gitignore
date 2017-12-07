@@ -5,8 +5,8 @@ __pycache__
 
 src/config.py
 
-data/images
-data/photos.csv
+data/
+!data/.keep
 
-submission/images_order.csv
-submission/images_vec.npz
+submission/
+!submission/.keep
