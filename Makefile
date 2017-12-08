@@ -20,6 +20,9 @@ start:
 ssh_site:
 	gcloud compute --project "mltest-180907" ssh --zone "europe-west1-d" "kawaii-search"
 
+site_reload:
+	gcloud compute ssh --command "sudo service app restart" --project "mltest-180907" --zone "europe-west1-d" "kawaii-search"
+
 copy_site:
 	gcloud compute ssh --command "rm -rf ~/images_similarity/src" --project "mltest-180907" --zone "europe-west1-d" "kawaii-search"
 	gcloud compute ssh --command "rm -rf ~/images_similarity/templates" --project "mltest-180907" --zone "europe-west1-d" "kawaii-search"
