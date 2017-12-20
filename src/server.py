@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, render_template
-
-from imlucky import imlucky
+import sys
+from imlucky import load
 
 app = Flask(__name__, template_folder='../templates', static_folder='../data')
 
+imlucky = load(sys.argv[1])
 
 @app.route('/', methods=['GET'])
 def index():

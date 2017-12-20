@@ -1,12 +1,13 @@
-# Images similarity
+# Kawaii Search (Images similarity)
+
+![vk.com/tokyofashion](https://i.imgur.com/e9bpwWY.png)
+![vk.com/tokyofashion](https://i.imgur.com/dDAJCuY.png)
 
 This is a demo of applying VGG16 and kNN to build similar image search. 
 
 ## Dataset
 
-__[download my dataset](https://yadi.sk/d/lNREFvKa3QPSRs)__
-
-You can use any big dataset with images. I used cosplay pictures from this group: [vk/wtfcute](https://vk.com/wtfcute).
+You can use any big dataset with images. I used look pictures from this group: [vk/tokyofashion](https://vk.com/tokyofashion).
 
 ```
 ./data
@@ -27,6 +28,10 @@ But you have to generate all the 512-sized vectors for each image, so run `src/v
 ## Evaluating
 
 Look into `test.ipynb` file for example of using this model.
+
+## Deploy
+
+Modify and copy app.service to the `/etc/systemd/system`. Run `systemctl daemon-reload` and `systemctl enable app.service`.
 
 ## TODO
 
