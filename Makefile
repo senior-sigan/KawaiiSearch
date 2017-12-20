@@ -30,6 +30,6 @@ copy_site:
 	gcloud compute scp src "kawaii-search":~/images_similarity/src --recurse --zone europe-west1-d --compress
 
 copy_site_data:
-	gcloud compute scp submission/images_order_-70232735.csv "kawaii-search":~/images_similarity/submission/images_order_-70232735.csv --zone europe-west1-d
-	gcloud compute scp data/photos_-70232735.csv "kawaii-search":~/images_similarity/data/photos_-70232735.csv --zone europe-west1-d
-	gcloud compute scp submission/images_vec_-70232735.npz "kawaii-search":~/images_similarity/submission/images_vec_-70232735.npz --zone europe-west1-d
+	gcloud compute scp submission/images_order_-29341229.csv "kawaii-search":~/images_similarity/submission/images_order_-29341229.csv --zone europe-west1-d
+	gcloud compute scp data/photos_-29341229.csv "kawaii-search":~/images_similarity/data/photos_-29341229.csv --zone europe-west1-d
+	gcloud compute scp submission/images_vec_-29341229.npz "kawaii-search":~/images_similarity/submission/images_vec_-29341229.npz --zone europe-west1-d
