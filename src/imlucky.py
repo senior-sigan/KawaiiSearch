@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from database import pictures_repo
 from predict_dummy import load_predictor, random
 
-def load(owner_id):
+
+def load(dir_name, pictures_repo):
     print("Loading imlucky")
-    pred = load_predictor(owner_id)
-    rf = random(owner_id)
-    repo = pictures_repo(owner_id)
+    pred = load_predictor(dir_name)
+    rf = random(dir_name)
+    repo = pictures_repo(dir_name)
     print("Imlucky loaded")
 
     def imlucky():

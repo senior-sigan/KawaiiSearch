@@ -1,7 +1,8 @@
 from vk_api import VkApi
 from vk_api import VkTools
 
-from settings import secrets, config
+from settings import config
+from vk.settings import secrets
 
 KEYS = ['id', 'owner_id', 'album_id', 'date', 'big', 'small']
 

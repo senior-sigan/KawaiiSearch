@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from settings import config
+from vk.settings import config
 
 
 def pictures_repo(owner_id):

@@ -28,9 +28,9 @@ def _similar(vec, knn, filenames, n_neighbors=6):
     return [(filenames[indices[i]], dist[i]) for i in range(len(indices))]
 
 
-def load_predictor(owner_id):
-    filenames = open(config.images_order(owner_id), 'r').readline().split(',')
-    vecs = load_sparse_matrix(config.vectors_path(owner_id))
+def load_predictor(dir_name):
+    filenames = open(config.images_order(dir_name), 'r').readline().split(',')
+    vecs = load_sparse_matrix(config.vectors_path(dir_name))
     base_model = VGG19(weights='imagenet')
     # Read about fc1 here http://cs231n.github.io/convolutional-networks/
     model = Model(inputs=base_model.input, outputs=base_model.get_layer('fc1').output)

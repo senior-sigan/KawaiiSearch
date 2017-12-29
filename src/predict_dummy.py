@@ -13,10 +13,10 @@ def _similar(vec, knn, filenames, n_neighbors=6):
     return [(filenames[indices[i]], dist[i]) for i in range(len(indices))]
 
 
-def load_predictor(owner_id):
+def load_predictor(dir_name):
     print("load predictor")
-    filenames = open(config.images_order(owner_id), 'r').readline().split(',')
-    vecs = load_sparse_matrix(config.vectors_path(owner_id))
+    filenames = open(config.images_order(dir_name), 'r').readline().split(',')
+    vecs = load_sparse_matrix(config.vectors_path(dir_name))
     knn = NearestNeighbors(metric='cosine', algorithm='brute')
     knn.fit(vecs)
 
@@ -27,9 +27,9 @@ def load_predictor(owner_id):
     return similarity
 
 
-def random(owner_id):
+def random(dir_name):
     print("Preparing random generator")
-    vecs = load_sparse_matrix(config.vectors_path(owner_id)).toarray()
+    vecs = load_sparse_matrix(config.vectors_path(dir_name)).toarray()
     s = vecs.shape[0]
 
     def rf():

@@ -48,14 +48,14 @@ def vectorize_all(files, model, px=224, n_dims=512, batch_size=512):
     return preds
 
 
-def main(owner_id):
-    files = glob(config.images_glob_path(owner_id))
-    save(files, config.images_order(owner_id))
+def main(dir_name):
+    files = glob(config.images_glob_path(dir_name))
+    save(files, config.images_order(dir_name))
 
     base_model = VGG19(weights='imagenet')
     # Read about fc1 here http://cs231n.github.io/convolutional-networks/
     model = Model(inputs=base_model.input, outputs=base_model.get_layer('fc1').output)
 
     vecs = vectorize_all(files, model, n_dims=4096)
-    save_sparse_matrix(config.vectors_path(owner_id), vecs)
+    save_sparse_matrix(config.vectors_path(dir_name), vecs)
     print('Finished')

@@ -6,7 +6,18 @@ from imlucky import load
 
 app = Flask(__name__, template_folder='../templates', static_folder='../data')
 
-imlucky = load(sys.argv[1])
+
+def get_pictures_repo():
+    if len(sys.argv) > 2 and sys.argv[2] == 'vk':
+        from vk import vk_database
+        return vk_database.pictures_repo
+    else:
+        import dummy_database
+        return dummy_database.pictures_repo
+
+
+imlucky = load(sys.argv[1], get_pictures_repo())
+
 
 @app.route('/', methods=['GET'])
 def index():
