@@ -1,13 +1,15 @@
 # Kawaii Search (Images similarity)
 
-![vk.com/tokyofashion](https://i.imgur.com/e9bpwWY.png)
-![vk.com/tokyofashion](https://i.imgur.com/dDAJCuY.png)
+The blog post describing how it works is [here](https://medium.com/@senior_sigan/similar-images-search-ce433491059b).
 
 This is a demo of applying VGG16 and kNN to build similar image search. 
 
+![vk.com/tokyofashion](https://i.imgur.com/e9bpwWY.png)
+![vk.com/tokyofashion](https://i.imgur.com/dDAJCuY.png)
+
 ## Dataset
 
-You can use any big dataset with images. I used look pictures from this group: [vk/tokyofashion](https://vk.com/tokyofashion).
+You can use any big dataset with images. I used pictures from this group about fashion: [vk/tokyofashion](https://vk.com/tokyofashion).
 
 ```
 ./data
@@ -35,8 +37,9 @@ Modify and copy app.service to the `/etc/systemd/system`. Run `systemctl daemon-
 
 ## TODO
 
-- [ ] create a single main file to do all the steps
-- [ ] write a blog post about this
-- [ ] create an app to find similar photos from the dataset by an image URL
+- [x] create a single main file to do all the steps
+- [x] write a blog post about this
+- [x] build a web service with
+- [ ] add feature to find similar photos by an image URL
 - [ ] create web service for telegram chat
-- [ ] download more images 
+- [x] download more images 
