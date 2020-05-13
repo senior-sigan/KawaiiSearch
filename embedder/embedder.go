@@ -1,21 +1,22 @@
-package main
+package embedder
 
 /*
-typedef struct embedder_t_ embedder_t;
-embedder_t *NewEmbedder(const char *path);
-void DestroyEmbedder(embedder_t *embedder);
-void Transform(embedder_t *embedder, float *image, float *prediction);
-int GetEmbeddingSize(embedder_t *embedder);
-int GetInputWidth(embedder_t *embedder);
-int GetInputHeight(embedder_t *embedder);
+#include <stdlib.h>
+#include "embedder_c.h"
 
-#cgo LDFLAGS: -L${SRCDIR}/src_cpp/cmake-build-debug/ -lkawaii_search
-#cgo darwin LDFLAGS:  -L${SRCDIR}/src_cpp/libs/osx/libtorch/lib   -lstdc++ -ltorch -lc10
-#cgo linux LDFLAGS:   -L${SRCDIR}/src_cpp/libs/linux/libtorch/lib -lstdc++ -ltorch -lc10
+#cgo darwin CPPFLAGS: -I${SRCDIR}/libs/osx/libtorch/include
+#cgo linux  CPPFLAGS: -I${SRCDIR}/libs/linux/libtorch/include
+
+#cgo CXXFLAGS: -std=c++14
+
+#cgo darwin LDFLAGS: -L${SRCDIR}/libs/osx/libtorch/lib -lstdc++ -ltorch_cpu -lc10
+#cgo linux  LDFLAGS: -L${SRCDIR}/libs/linux/libtorch/lib -lstdc++ -ltorch_cpu -lc10
 */
 import "C"
-import "unsafe"
-import "fmt"
+import (
+	"fmt"
+	"unsafe"
+)
 
 // Embedder encapsulates raw-c object to intercat with neural network
 type Embedder struct {

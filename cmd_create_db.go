@@ -1,6 +1,8 @@
 package main
 
 import (
+	"kawaii_search/embedder"
+
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -35,13 +37,13 @@ func run(imagesDir string) {
 		return
 	}
 	logrus.WithField("path", modelPath).Info("Loading model")
-	embedder := NewEmbedder(modelPath)
-	logrus.WithField("model", embedder.String()).WithField("path", modelPath).Info("Model is loaded. Ready to process images")
+	emb := embedder.NewEmbedder(modelPath)
+	logrus.WithField("model", emb.String()).WithField("path", modelPath).Info("Model is loaded. Ready to process images")
 
 	// TODO: iterate over images and run embedder
 	image := make([]float32, 224*224*3)
-	out := embedder.Transform(image)
+	out := emb.Transform(image)
 	logrus.WithField("output", out).Info("Image processed")
-	embedder.DestroyEmbedder()
+	emb.DestroyEmbedder()
 
 }
