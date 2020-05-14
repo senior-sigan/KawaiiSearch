@@ -26,7 +26,6 @@ type Embedder struct {
 // NewEmbedder creates Embedder object
 func NewEmbedder(filename string) *Embedder {
 	cModelPath := C.CString(filename)
-	//TODO: path a model config to the NewEmbedder constructor
 	predictor := C.NewEmbedder(cModelPath)
 	return &Embedder{
 		raw: predictor,
