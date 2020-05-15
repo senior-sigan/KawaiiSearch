@@ -30,7 +30,7 @@ func NewInMemStorage() *Storage {
 	}
 }
 
-func (s* Storage) Close() error {
+func (s *Storage) Close() error {
 	return s.db.Close()
 }
 
@@ -52,6 +52,28 @@ func (s *Storage) GetFiles() ([]string, error) {
 	return files, err
 }
 
+func (s *Storage) UpdateKey(oldKey string, newKey string) error {
+	return s.db.Update(func(txn *badger.Txn) error {
+		item, err := txn.Get([]byte(oldKey))
+		if err != nil {
+			return err
+		}
+		data, err := item.ValueCopy(nil)
+		if err != nil {
+			return err
+		}
+		err = txn.Set([]byte(newKey), data)
+		if err != nil {
+			return err
+		}
+		err = txn.Delete([]byte(oldKey))
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+}
+
 func (s *Storage) UpsertFeatures(fileName string, features []float32) error {
 	err := s.db.Update(func(txn *badger.Txn) error {
 		data, err := MarshalFloats(features)
@@ -64,7 +86,24 @@ func (s *Storage) UpsertFeatures(fileName string, features []float32) error {
 	return err
 }
 
-func (s* Storage) GetFeatures(fileName string) ([]float32, error) {
+func (s *Storage) Contains(filename string) (bool, error) {
+	contains := false
+	err := s.db.View(func(txn *badger.Txn) error {
+		_, err := txn.Get([]byte(filename))
+		if err == nil {
+			contains = true
+			return nil
+		}
+		if err == badger.ErrKeyNotFound {
+			contains = false
+			return nil
+		}
+		return err
+	})
+	return contains, err
+}
+
+func (s *Storage) GetFeatures(fileName string) ([]float32, error) {
 	var features []float32
 	err := s.db.View(func(txn *badger.Txn) error {
 		item, err := txn.Get([]byte(fileName))
@@ -83,4 +122,10 @@ func (s* Storage) GetFeatures(fileName string) ([]float32, error) {
 	})
 
 	return features, err
+}
+
+func (s* Storage) Remove(filename string) error {
+	return s.db.Update(func(txn *badger.Txn) error {
+		return txn.Delete([]byte(filename))
+	})
 }

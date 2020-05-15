@@ -1,0 +1,65 @@
+package images
+
+import (
+	"image"
+	_ "image/jpeg"
+	_ "image/png"
+	"io"
+
+	"github.com/disintegration/imaging"
+	"github.com/rwcarlsen/goexif/exif"
+)
+
+//Decode is image.Decode handling orientation in EXIF tags if exists.
+//Requires io.ReadSeeker instead of io.Reader.
+//
+//This code is based on the current go1.12 implementation of image.Decode
+//which doesn't support exif tags: https://github.com/golang/go/issues/4341
+func Decode(reader io.ReadSeeker) (image.Image, string, error) {
+	img, fmt, err := image.Decode(reader)
+	if err != nil {
+		return img, fmt, err
+	}
+	_, err = reader.Seek(0, io.SeekStart)
+	if err != nil {
+		return img, fmt, err
+	}
+	orientation := getOrientation(reader)
+	switch orientation {
+	case "1":
+	case "2":
+		img = imaging.FlipH(img)
+	case "3":
+		img = imaging.Rotate180(img)
+	case "4":
+		img = imaging.Rotate180(imaging.FlipH(img))
+	case "5":
+		img = imaging.Rotate270(imaging.FlipV(img))
+	case "6":
+		img = imaging.Rotate270(img)
+	case "7":
+		img = imaging.Rotate90(imaging.FlipV(img))
+	case "8":
+		img = imaging.Rotate90(img)
+	}
+
+	return img, fmt, err
+}
+
+func getOrientation(reader io.Reader) string {
+	x, err := exif.Decode(reader)
+	if err != nil {
+		return "1"
+	}
+	if x != nil {
+		orient, err := x.Get(exif.Orientation)
+		if err != nil {
+			return "1"
+		}
+		if orient != nil {
+			return orient.String()
+		}
+	}
+
+	return "1"
+}

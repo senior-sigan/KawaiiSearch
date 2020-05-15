@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package embedder;
+
+import "google/protobuf/empty.proto";
+
+message HeartbeatResponse {
+    string message = 1;
+}
+
+message EmbeddingResponse {
+    int32 size = 1;
+    repeated float embedding = 2;
+}
+
+message Image {
+    // supposing images are always 3-channel RGB
+    int32 height = 1;
+    int32 width = 2;
+    bytes image_data = 3;
+}
+
+service EmbedderService {
+    rpc Heartbeat (google.protobuf.Empty) returns (HeartbeatResponse);
+    rpc Transform(Image) returns (EmbeddingResponse);
+}
