@@ -1,5 +1,9 @@
 # Kawaii Search (Images similarity)
 
+> :construction_worker: I work hard on new version of Kawaii Search. It'll be an app you can install on your computer and do similar search over your images. No internet or API required, I'll be full in-house self-hosted solution.
+
+> :envelope: Feel free to open an issue or [email me](mailto:ilya.blan4@gmail.com).
+
 The blog post describing how it works is [here](https://medium.com/@senior_sigan/similar-images-search-ce433491059b).
 
 This is a demo of applying VGG16 and kNN to build similar image search. 
